@@ -1,0 +1,40 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DB_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id        String   @id @default(uuid())
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    @@map(name: "users")
+}
+
+model City {
+    id           String        @id @default(uuid())
+    name         String
+    createdAt    DateTime      @default(now()) @map(name: "created_at")
+    updatedAt    DateTime      @updatedAt @map(name: "updated_at")
+    cityWeathers CityWeather[]
+
+    @@map(name: "cities")
+}
+
+model CityWeather {
+    id               String   @id @default(uuid())
+    cityId           String   @map(name: "city_id")
+    city             City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
+    weatherCondition String   @map(name: "weather_condition")
+    weatherDate      DateTime @map(name: "weather_date") @db.Date
+    createdAt        DateTime @default(now()) @map(name: "created_at")
+    updatedAt        DateTime @updatedAt @map(name: "updated_at")
+
+    @@map(name: "city_weathers")
+}
