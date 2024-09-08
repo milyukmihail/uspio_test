@@ -1,5 +1,7 @@
 Make sure you are using the node version.js > 22
 
+Also fill out GMAIL secrets
+
 ```bash
 pnpm install
 
